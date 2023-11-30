@@ -1,15 +1,18 @@
-import { Suspense, useState } from "react";
-import { Card } from "react-bootstrap";
-import { Await } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
+import moment from "moment";
+import 'bootstrap/dist/css/bootstrap.css';
+import { Card, Pagination } from "react-bootstrap";
+import { useState } from "react";
+import ReactPaginate from 'react-paginate';
 import Table from 'react-bootstrap/Table';
-
-function UrlStroage({ websiteurl }) {
+import { fireEvent } from "@testing-library/react";
+function StoreFix({ storerrorfix }) {
     const [currentpage, setCurrentpage] = useState(1)
     const recordPerpage = 4;
     const lastindex = currentpage * recordPerpage;
     const firstindex = lastindex - recordPerpage;
-    const records = websiteurl.slice(firstindex, lastindex)
-    const npage = Math.ceil(websiteurl.length / recordPerpage);
+    const records = storerrorfix.slice(firstindex, lastindex)
+    const npage = Math.ceil(storerrorfix.length / recordPerpage);
     const number = [...Array(npage + 1).keys()].slice(1)
 
     function nextPage() {
@@ -30,30 +33,42 @@ function UrlStroage({ websiteurl }) {
     return (
         <>
             <Card>
-                <Table striped bordered hover style={{ margin: 'auto', width: '80%' }}>
+                <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Website Name</th>
-                            <th>Website url</th>
-                            <th>About the  Website</th>
+                           
+                            <th>Error Name</th>
+                            <th>Date Added</th>
+                            <th>Veiw Solutons</th>
                         </tr>
                     </thead>
-                    {records.map((item) => {
+                    {records.map((item, index) => {
                         return (
-                            <tbody key={item._id} className="mt-4">
-                                <tr className="mt-4">
-                                    <td>{item.webname} </td>
-
-                                    <td style={{ color: 'blue', fontWeight: 'bold' }} >
-                                        <a href={`${item.websiteurl}`}>{item.websiteurl}</a></td>
-
-                                    <td>{item.about}</td>
+                            <tbody key={item._id} >
+                                <tr className="mt-1">
+                                    {/* <td>{index}</td> */}
+                                    <td>{item.errorname}</td>
+                                    <td>{moment(item.createdAt)
+                                        .utc()
+                                        .format("YYYY-MM-DD")
+                                    }</td>
+                                    <td>
+                                        <Link
+                                            to={`/dashboard/${item._id}`}
+                                            className="button is-info btn-sm px-3 py-1 rounded-0"
+                                        >
+                                            view
+                                        </Link>
+                                    </td>
                                 </tr>
+
                             </tbody>
                         )
                     })}
-                </Table>
 
+
+
+                </Table>
                 <nav className="pagination" role="navigation" aria-label="pagination">
                     <ul className="pagination m-4">
                         <li>
@@ -75,12 +90,11 @@ function UrlStroage({ websiteurl }) {
                         </li>
                     </ul>
                 </nav>
-
             </Card>
-
-
         </>
     )
 }
 
-export default UrlStroage;
+
+
+export default StoreFix;

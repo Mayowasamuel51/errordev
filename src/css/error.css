@@ -1,0 +1,15 @@
+.error-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .error-message {
+    background-color: #ffcccc;
+    border: 1px solid #ff0000;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }

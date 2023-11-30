@@ -1,12 +1,14 @@
 import React from 'react'
 import './navheader'
+import AppF from '../Firbase'
 const Header = (props) => {
     return (
         <div>
+            
             <nav className="navbar has-shadow">
 
                 <div className="container">
-                    <div className="navbar-brand"><a className="navbar-item" href="../"><img src="http://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" /></a>
+                    <div className="navbar-brand"><a className="navbar-item" href="#"><img src={`${props.image}`}  /></a>
                         <div className="navbar-burger burger " data-target="navMenu"><span></span><span></span><span></span></div>
                     </div>
                     <div className="navbar-menu " id="navMenu">

@@ -1,87 +1,44 @@
-import React from 'react'
-import Nav from '../Bulma/Nav'
+import React, { Suspense, useMemo } from 'react';
+import { Outlet, useLoaderData, Await } from 'react-router-dom';
+import PortfoiloList from '../components/PortfoiloList';
 
 const Home = () => {
+    const { portfoilo } = useLoaderData();
+    const memoizedPortfoiloList = useMemo(() => <PortfoiloList portfoilo={portfoilo} />, [portfoilo]);
+
     return (
         <>
-            <div className='container-fluid'>
-                <Nav />
-
-                <div className='columns'>
-                <article className="media column">
-                    <figure className="media-left">
-                        <p className="image is-64x64">
-                            <img src="https://bulma.io/images/placeholders/128x128.png" />
-                        </p>
-                    </figure>
-                    <div className="media-content">
-                        <div className="content">
-                            <p>
-                                <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>
-                                <br />
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
+            <div className="container-fluid">
+                <div className="mt-4">
+                    <h4 className="is-size-3 has-text-centered">Developer's portfoilo </h4>
+                    <Suspense
+                        fallback={
+                            <p style={{ textAlign: 'center', fontSize: '40px', fontWeight: 'bolder' }}>
+                                LOADING.....
                             </p>
-                        </div>
-                        <nav className="level is-mobile">
-                            <div className="level-left">
-                                <a className="level-item">
-                                    <span className="icon is-small"><i className="fas fa-reply"></i></span>
-                                </a>
-                                <a className="level-item">
-                                    <span className="icon is-small"><i className="fas fa-retweet"></i></span>
-                                </a>
-                                <a className="level-item">
-                                    <span className="icon is-small"><i className="fas fa-heart"></i></span>
-                                </a>
-                            </div>
-                        </nav>
-                    </div>
-                    <div className="media-right">
-                        <button className="delete"></button>
-                    </div>
-                </article>
-                <article className="media column">
-                    <figure className="media-left">
-                        <p className="image is-64x64">
-                            <img src="https://bulma.io/images/placeholders/128x128.png" />
-                        </p>
-                    </figure>
-                    <div className="media-content">
-                        <div className="content">
-                            <p>
-                                <strong>John Smith</strong> <small>website portfoilo</small> <small>31m</small>
-                                    <br />
-                                    <div>
-                                        <h2></h2>
-                                    </div>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
-                            </p>
-                        </div>
-                        <nav className="level is-mobile">
-                            <div className="level-left">
-                                <a className="level-item">
-                                    <span className="icon is-small"><i className="fas fa-reply"></i></span>
-                                </a>
-                                <a className="level-item">
-                                    <span className="icon is-small"><i className="fas fa-retweet"></i></span>
-                                </a>
-                                <a className="level-item">
-                                    <span className="icon is-small"><i className="fas fa-heart"></i></span>
-                                </a>
-                            </div>
-                        </nav>
-                    </div>
-                    <div className="media-right">
-                        <button className="delete"></button>
-                    </div>
-                </article>
-
+                        }
+                    >
+                        <Await resolve={portfoilo}>{() => memoizedPortfoiloList}</Await>
+                    </Suspense>
                 </div>
             </div>
-
         </>
-    )
+    );
+};
+
+async function loadportfollio() {
+    const res = await fetch('http://localhost:8000/api/portfolios');
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.message || 'Could not fetch portfolios');
+    }
+    return data.data;
 }
 
+export async function portfolioloader() {
+    return {
+        portfoilo: await loadportfollio(),
+    };
+}
 
 export default Home;

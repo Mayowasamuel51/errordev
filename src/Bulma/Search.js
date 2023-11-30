@@ -10,7 +10,7 @@ function Search() {
                             <div className="card-content">
                                 <div className="content">
                                     <div className="control has-icons-left has-icons-right">
-                                        <input className="input is-large" type="search" placeholder="search for questions" />
+                                        <input className="input is-medium" type="search" placeholder="search for questions" />
                                         <span className="icon is-small is-left">
                                             <i className="fa fa-search"></i>
                                         </span>
